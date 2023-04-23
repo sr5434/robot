@@ -1,5 +1,5 @@
 # #!/usr/bin/env python3
-
+#Currently work in progress
 print('Please run under desktop environment (eg: vnc) to display the image window')
 
 from robot_hat.utils import reset_mcu
@@ -20,6 +20,10 @@ Press key to call the function(non-case sensitive):
     S: backward
     A: turn left
     D: turn right
+    L: Turn camera left
+    R: Turn camera right
+    U: Tilt camera up
+    D: Tilt camera down
     F: stop
     T: take photo
 
@@ -60,7 +64,8 @@ def move(operate, speed):
 def main():
     speed = 0
     status = 'stop'
-
+    servo1_angle=0
+    servo2_angle=0
     Vilib.camera_start(vflip=False,hflip=False)
     Vilib.display(local=True,web=True)
     sleep(2)  # wait for startup
@@ -70,6 +75,19 @@ def main():
         print("\rstatus: %s , speed: %s    "%(status, speed))
         # readkey
         key = readchar.readkey().lower()
+        if key == 'u':
+            servo1_angle = servo1_angle + 1
+            px.set_camera_servo1_angle(servo1_angle)
+        if key == 'd':
+            servo1_angle = servo1_angle - 1
+            px.set_camera_servo1_angle(servo1_angle)
+        if key == 'l':
+            servo2_angle = servo1_angle + 1
+            px.set_camera_servo2_angle(servo2_angle)
+        if key == 'r':
+            servo2_angle = servo2_angle - 1
+            px.set_camera_servo2_angle(servo2_angle)
+        
         # operation 
         if key in ('wsadfop'):
             # throttle
